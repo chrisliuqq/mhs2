@@ -181,6 +181,11 @@ const app = Vue.createApp({
             data.feed.entry.forEach(function(m) {
                 var monster = {};
                 var name = self.replaceName(m['gsx$魔物表示不可騎乘']['$t'].trim());
+                var hasEgg = true;
+                if (name.indexOf('*')) {
+                    hasEgg = false;
+                    name = name.replace('*', '');
+                }
                 if(name) {
                     monster.name = name;
                     monster.weakPartMain = m['gsx$主要沒部位時']['$t'].trim();
@@ -194,6 +199,7 @@ const app = Vue.createApp({
                     monster.weakPartFoot = m['gsx$腳斬刺打']['$t'].trim();
                     monster.weakPartTail = m['gsx$尾斬刺打']['$t'].trim();
                     monster.keywords = monster.name;
+                    monster.hasEgg = hasEgg;
                     self.monsters.push(monster);
                 }
             });
@@ -206,6 +212,11 @@ const app = Vue.createApp({
             data.feed.entry.forEach(function(m) {
                 var monster = {};
                 var name = self.replaceName(m['gsx$魔物名稱']['$t'].trim());
+                var hasEgg = false;
+                if (name.indexOf('(🥚)')) {
+                    hasEgg = true;
+                    name = name.replace('(🥚)', '');
+                }
                 if(name) {
                     monster.name = name;
                     monster.enName = m['gsx$英文名稱']['$t'].trim();
@@ -221,6 +232,7 @@ const app = Vue.createApp({
                     monster.weakPartTail = m['gsx$尾巴']['$t'].trim();
                     monster.requireLevel = m['gsx$可掃蕩等級']['$t'].trim();
                     monster.home = m['gsx$歸巢加成']['$t'].trim();
+                    monster.hasEgg = hasEgg;
                     monster.keywords = monster.name + monster.enName.toLowerCase();
                     self.monsters2.push(monster);
                 }
